@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lfwang.reactor.demo.repository.mapper.ProductMapper">
+
+    <select id="getById" resultType="com.lfwang.reactor.demo.repository.domain.Product">
+        SELECT * FROM products WHERE id=#{id} LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="com.lfwang.reactor.demo.repository.domain.Product">
+        INSERT INTO products
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != name">name,</if>
+            <if test="null != price">price,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != name">#{name},</if>
+            <if test="null != price">#{price},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.lfwang.reactor.demo.repository.domain.Product">
+        UPDATE products 
+        <set>
+            <if test="null != name">name=#{name},</if>
+            <if test="null != price">price=#{price},</if>
+        </set>
+        WHERE id=#{id} LIMIT 1
+    </update>
+    
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM products WHERE id=#{id}
+    </delete>
+    
+    <delete id="delete" parameterType="com.lfwang.reactor.demo.repository.domain.Product">
+        DELETE FROM products WHERE
+        <include refid="findWhereStatement"/>
+    </delete>
+    
+    <sql id="findWhereStatement">
+        <if test="null != id">id=#{id}</if>
+        <if test="null != name">name=#{name}</if>
+        <if test="null != price">price=#{price}</if>
+    </sql>
+</mapper>

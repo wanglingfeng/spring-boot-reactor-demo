@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+    include: mongodb, jdbc
+  application:
+    name: spring-boot-reactor-demo
+  output.ansi.enabled: always
+
+logging:
+  register-shutdown-hook: true
